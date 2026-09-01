@@ -310,7 +310,9 @@ export const KPICardsGrid: React.FC<KPICardsGridProps> = ({
 
           <div className="mt-2 text-[11px] text-amber-300/90 font-medium flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-            <span>1 Warning · 1 Advisory</span>
+            <span id="kpi-alerts-warning-subtext" className="kpi-alert-subtext">
+              1 Warning · 1 Advisory
+            </span>
           </div>
         </div>
 

@@ -319,6 +319,13 @@
   color: #A97B1F !important;
 }
 
+/* Light mode override for active alerts KPI card subtext -> Light Orange */
+.light #kpi-alerts-warning-subtext,
+.light .kpi-alert-subtext,
+.light #kpi-card-alerts div:nth-of-type(2) > div:nth-of-type(2) > span:nth-of-type(2) {
+  color: #F97316 !important; /* light orange */
+}
+
 /* Danger / Critical: Text #9C4436 (rust), Background #F1D0D4 */
 .light .bg-rose-950,
 .light .bg-rose-950\/70,
