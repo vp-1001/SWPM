@@ -9,6 +9,8 @@ import {
   CheckCircle2,
   AlertTriangle,
   ChevronDown,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { AlertItem } from '../types';
 
@@ -19,6 +21,8 @@ interface AppHeaderProps {
   isRefreshing: boolean;
   alerts: AlertItem[];
   onNavigateToAlerts?: () => void;
+  theme: 'dark' | 'light';
+  onToggleTheme: () => void;
 }
 
 export const AppHeader: React.FC<AppHeaderProps> = ({
@@ -28,6 +32,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   isRefreshing,
   alerts,
   onNavigateToAlerts,
+  theme,
+  onToggleTheme,
 }) => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [currentTime, setCurrentTime] = useState<string>('');
@@ -49,7 +55,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   return (
     <header
       id="app-header"
-      className="sticky top-0 z-30 h-16 bg-slate-950/90 border-b border-slate-800/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between"
+      className="sticky top-0 z-30 h-16 bg-slate-950/90 border-b border-slate-800/80 backdrop-blur-md px-4 sm:px-6 flex items-center justify-between transition-colors duration-200"
     >
       {/* Left: Mobile Toggle & Brand Headline */}
       <div className="flex items-center gap-3.5">
@@ -78,8 +84,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         </div>
       </div>
 
-      {/* Right Controls: Status, Timestamp, Notification, Profile */}
-      <div className="flex items-center gap-2.5 sm:gap-4">
+      {/* Right Controls: Status, Theme Toggle, Timestamp, Notification, Profile */}
+      <div className="flex items-center gap-2 sm:gap-3.5">
         {/* System Status: ONLINE */}
         <div
           id="system-status-indicator"
@@ -91,6 +97,21 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           </span>
           <span className="text-[11px] tracking-wide">ONLINE</span>
         </div>
+
+        {/* Theme Toggle Button (Transition from Dark Mode to Light Mode) */}
+        <button
+          id="theme-toggle-btn"
+          onClick={onToggleTheme}
+          className="relative p-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-amber-300 hover:border-amber-500/40 transition-all flex items-center justify-center group"
+          title={theme === 'dark' ? 'Switch to Light (Paper/Ledger) Theme' : 'Switch to Dark (SCADA) Theme'}
+          aria-label={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+        >
+          {theme === 'dark' ? (
+            <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
+          ) : (
+            <Moon className="w-4 h-4 text-[#2F4C69] group-hover:-rotate-12 transition-transform duration-300" />
+          )}
+        </button>
 
         {/* Live Clock & Last Data Update */}
         <div className="hidden lg:flex flex-col items-end text-right">
@@ -133,7 +154,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           {showNotifications && (
             <div
               id="notifications-popover"
-              className="absolute right-0 mt-2 w-80 sm:w-96 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-4 z-50 animate-in fade-in zoom-in-95 duration-100"
+              className="absolute right-0 mt-2 w-80 sm:w-96 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-4 z-50 animate-in fade-in zoom-in-95 duration-100 modal-surface"
             >
               <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                 <div className="flex items-center gap-2">

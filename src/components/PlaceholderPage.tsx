@@ -18,13 +18,19 @@ import { NavigationPageId } from '../types';
 
 interface PlaceholderPageProps {
   pageId: NavigationPageId;
-  onNavigateToDashboard: () => void;
+  onNavigateToDashboard?: () => void;
+  onBackToDashboard?: () => void;
 }
 
 export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
   pageId,
   onNavigateToDashboard,
+  onBackToDashboard,
 }) => {
+  const handleReturn = () => {
+    if (onNavigateToDashboard) onNavigateToDashboard();
+    else if (onBackToDashboard) onBackToDashboard();
+  };
   const getPageDetails = (id: NavigationPageId) => {
     switch (id) {
       case 'live-monitoring':
@@ -220,8 +226,9 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
             Phase 1 Focus: Core Shell & Main SCADA Dashboard
           </span>
           <button
-            onClick={onNavigateToDashboard}
-            className="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-mono font-bold transition-all shadow-md shadow-cyan-950/50 flex items-center gap-1.5"
+            id="return-to-dashboard-btn"
+            onClick={handleReturn}
+            className="px-4 py-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-mono font-bold transition-all shadow-md shadow-cyan-950/50 flex items-center gap-1.5 return-dashboard-btn"
           >
             <span>Return to Main Dashboard</span>
             <ArrowRight className="w-3.5 h-3.5" />

@@ -1,16 +1,395 @@
 @import "tailwindcss";
 
 @layer base {
-  body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  :root {
+    --bg-page: #020617;
+    --bg-surface: rgba(15, 23, 42, 0.9);
+    --bg-sunken: rgba(2, 6, 23, 0.8);
+    --line-border: rgba(51, 65, 85, 0.8);
+    --ink-primary: #f8fafc;
+    --ink-soft: #94a3b8;
+    --ink-faint: #64748b;
+    --accent-main: #06b6d4;
+    --accent-btn: #0891b2;
+    --accent-border: rgba(6, 182, 212, 0.3);
+    --accent-tint: rgba(6, 182, 212, 0.1);
+    --font-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-data: 'JetBrains Mono', monospace;
+    --radius-card: 0.75rem;
+    --radius-btn: 0.5rem;
+    --radius-badge: 0.25rem;
   }
-  
+
+  .light {
+    --bg-page: #FAF7EE;
+    --bg-surface: #FDFCF8;
+    --bg-sunken: #F6F1E3;
+    --line-border: #E4DCBE;
+    --ink-primary: #2B2620;
+    --ink-soft: #5C5445;
+    --ink-faint: #948A73;
+    --accent-main: #3E6690;
+    --accent-btn: #2F4C69;
+    --accent-border: #4C79A8;
+    --accent-tint: #E4EAF1;
+    --font-heading: 'Source Serif 4', Georgia, serif;
+    --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+    --font-data: 'IBM Plex Mono', monospace;
+    --radius-card: 3px;
+    --radius-btn: 3px;
+    --radius-badge: 3px;
+  }
+
+  body {
+    font-family: var(--font-body);
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+
+  .light body,
+  html.light body {
+    background-color: #FAF7EE !important;
+    color: #2B2620 !important;
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
   .font-mono {
-    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-family: var(--font-data) !important;
   }
 }
 
-/* Custom scrollbar for data tables and sidebars */
+/* Light theme overrides across all components */
+.light {
+  background-color: #FAF7EE;
+  color: #2B2620;
+}
+
+/* Light Theme Paper & Ledger Aesthetics */
+.light #app-header {
+  background-color: #FDFCF8 !important;
+  border-bottom-color: #E4DCBE !important;
+  box-shadow: 0 1px 2px rgba(43, 38, 32, 0.04);
+}
+
+.light #app-sidebar {
+  background-color: #FDFCF8 !important;
+  border-right-color: #E4DCBE !important;
+  border-radius: 0 !important;
+}
+
+.light #app-sidebar .border-b,
+.light #app-sidebar .border-t {
+  border-color: #E4DCBE !important;
+}
+
+.light #app-sidebar aside,
+.light aside {
+  background-color: #FDFCF8 !important;
+  border-color: #E4DCBE !important;
+}
+
+/* Headings in Light Mode: Source Serif 4 */
+.light h1,
+.light h2,
+.light h3,
+.light .font-display,
+.light .ledger-heading {
+  font-family: 'Source Serif 4', Georgia, serif !important;
+  color: #2B2620 !important;
+}
+
+/* Gradient Background Overrides -> Slightly Lighter Warm Beige Paper */
+.light [class*="bg-gradient-"],
+.light .bg-gradient-to-r,
+.light .bg-gradient-to-b,
+.light .bg-gradient-to-tr,
+.light .bg-gradient-to-br,
+.light .bg-gradient-to-l,
+.light .bg-gradient-to-t {
+  background-image: none !important;
+  background-color: #FDFCF8 !important;
+  border-color: #E4DCBE !important;
+}
+
+/* Telemetry Dashboard Banner & Header Overviews in Lighter Beige */
+.light #dashboard-telemetry-banner,
+.light .telemetry-banner {
+  background-image: none !important;
+  background-color: #FDFCF8 !important;
+  border-color: #E4DCBE !important;
+  box-shadow: 0 1px 3px rgba(43, 38, 32, 0.05) !important;
+}
+
+/* Cards & Surfaces in Light Mode (Crisp Warm Off-White / Paper) */
+.light .bg-slate-900,
+.light .bg-slate-900\/90,
+.light .bg-slate-900\/80,
+.light .bg-slate-900\/95,
+.light [id$="-card"],
+.light [id$="-section"],
+.light .modal-surface {
+  background-color: #FDFCF8 !important;
+  border-color: #E4DCBE !important;
+  border-radius: 3px !important;
+  box-shadow: 0 1px 3px rgba(43, 38, 32, 0.05) !important;
+}
+
+/* Sunken / Inset / Medium Slate Containers -> Slightly Lighter Warm Sand Beige (#F6F1E3) */
+.light .bg-slate-950,
+.light .bg-slate-950\/80,
+.light .bg-slate-950\/70,
+.light .bg-slate-950\/60,
+.light .bg-slate-950\/50,
+.light .bg-slate-950\/40,
+.light .bg-slate-950\/95,
+.light .bg-slate-950\/90,
+.light .bg-slate-950\/20,
+.light .bg-slate-950\/30,
+.light .bg-slate-800,
+.light .bg-slate-800\/90,
+.light .bg-slate-800\/80,
+.light .bg-slate-800\/70,
+.light .bg-slate-800\/60,
+.light .bg-slate-800\/50,
+.light .bg-slate-700,
+.light .bg-slate-700\/80,
+.light .bg-slate-700\/50 {
+  background-color: #F6F1E3 !important;
+  border-color: #E4DCBE !important;
+  border-radius: 3px !important;
+}
+
+/* Button & Interactive Hover States in Light Mode */
+.light button.bg-slate-800,
+.light button.bg-slate-700,
+.light #banner-btn-contamination {
+  background-color: #F6F1E3 !important;
+  color: #2B2620 !important;
+  border-color: #E4DCBE !important;
+}
+
+.light button.bg-slate-800:hover,
+.light button.bg-slate-700:hover,
+.light .hover\:bg-slate-800:hover,
+.light .hover\:bg-slate-700:hover,
+.light #banner-btn-contamination:hover {
+  background-color: #EDE4D0 !important;
+  color: #2B2620 !important;
+}
+
+/* Return to Main Dashboard Button (Slightly Darker than Beige per specification) */
+.light .return-dashboard-btn,
+.light button.return-dashboard-btn,
+.light #return-to-dashboard-btn {
+  background-color: #D5C59A !important;
+  color: #201C17 !important;
+  border: 1px solid #BAA97B !important;
+  box-shadow: 0 1px 3px rgba(43, 38, 32, 0.12) !important;
+  font-weight: 700 !important;
+}
+
+.light .return-dashboard-btn:hover,
+.light button.return-dashboard-btn:hover,
+.light #return-to-dashboard-btn:hover {
+  background-color: #C7B484 !important;
+  border-color: #A99666 !important;
+  color: #100E0C !important;
+}
+
+.light .return-dashboard-btn svg,
+.light #return-to-dashboard-btn svg {
+  color: #201C17 !important;
+}
+
+/* Table Headings & Stripes */
+.light thead tr,
+.light th {
+  background-color: #F6F1E3 !important;
+  color: #5C5445 !important;
+  border-color: #E4DCBE !important;
+}
+
+.light tbody tr {
+  border-color: #ECE3C9 !important;
+}
+
+.light tbody tr:hover {
+  background-color: #F6F1E3 !important;
+}
+
+/* Border Overrides in Light Mode */
+.light .border-slate-800,
+.light .border-slate-800\/80,
+.light .border-slate-800\/60,
+.light .border-slate-800\/90,
+.light .border-slate-700,
+.light .border-slate-700\/80,
+.light .border-slate-700\/60 {
+  border-color: #E4DCBE !important;
+}
+
+/* Text Colors in Light Mode */
+.light .text-white,
+.light .text-slate-100,
+.light .text-slate-200 {
+  color: #2B2620 !important;
+}
+
+.light .text-slate-300,
+.light .text-slate-400 {
+  color: #5C5445 !important;
+}
+
+.light .text-slate-500,
+.light .text-slate-600 {
+  color: #948A73 !important;
+}
+
+/* Shape Override in Light Mode: 3px Radius everywhere */
+.light .rounded-xl,
+.light .rounded-2xl,
+.light .rounded-lg,
+.light .rounded-md,
+.light .rounded {
+  border-radius: 3px !important;
+}
+
+/* Button & Nav Overrides in Light Mode */
+.light .bg-cyan-500:not(.return-dashboard-btn):not(#return-to-dashboard-btn),
+.light button.bg-cyan-500:not(.return-dashboard-btn):not(#return-to-dashboard-btn) {
+  background-color: #2F4C69 !important;
+  color: #FFFFFF !important;
+  border-radius: 3px !important;
+}
+
+.light .bg-cyan-500\/10,
+.light .bg-cyan-500\/20 {
+  background-color: #E4EAF1 !important;
+  color: #2F4C69 !important;
+  border-color: #4C79A8 !important;
+}
+
+.light .text-cyan-400,
+.light .text-cyan-300 {
+  color: #3E6690 !important;
+}
+
+.light .border-cyan-500\/30,
+.light .border-cyan-500\/40,
+.light .border-cyan-500\/20,
+.light .border-cyan-800\/60 {
+  border-color: #4C79A8 !important;
+}
+
+/* Light Mode Status Colors (Muted / Earthy per specification) */
+/* Safe: Text #4C7A4A (moss green), Background #E7EEDE */
+.light .bg-emerald-950,
+.light .bg-emerald-950\/70,
+.light .bg-emerald-950\/60,
+.light .bg-emerald-950\/80,
+.light .bg-emerald-500\/10,
+.light .bg-emerald-500\/20 {
+  background-color: #E7EEDE !important;
+  border-color: #B9CEAA !important;
+  color: #4C7A4A !important;
+}
+
+.light .text-emerald-400,
+.light .text-emerald-300,
+.light .text-emerald-500 {
+  color: #4C7A4A !important;
+}
+
+/* Warning: Text #A97B1F (ochre), Background #F2E4C9 */
+.light .bg-amber-950,
+.light .bg-amber-950\/70,
+.light .bg-amber-950\/60,
+.light .bg-amber-950\/80,
+.light .bg-amber-500\/10,
+.light .bg-amber-500\/15,
+.light .bg-amber-500\/20 {
+  background-color: #F2E4C9 !important;
+  border-color: #E2CC9C !important;
+  color: #A97B1F !important;
+}
+
+.light .text-amber-400,
+.light .text-amber-300,
+.light .text-amber-500 {
+  color: #A97B1F !important;
+}
+
+/* Danger / Critical: Text #9C4436 (rust), Background #F1D0D4 */
+.light .bg-rose-950,
+.light .bg-rose-950\/70,
+.light .bg-rose-950\/60,
+.light .bg-rose-950\/80,
+.light .bg-rose-950\/10,
+.light .bg-rose-500\/10,
+.light .bg-rose-500\/20 {
+  background-color: #F1D0D4 !important;
+  border-color: #E2A4AA !important;
+  color: #9C4436 !important;
+}
+
+.light .text-rose-400,
+.light .text-rose-300,
+.light .text-rose-500 {
+  color: #9C4436 !important;
+}
+
+/* SVG and Circular Gauges in Light Mode */
+.light .stroke-slate-800 {
+  stroke: #E4DCBE !important;
+}
+
+.light .stroke-emerald-400 {
+  stroke: #4C7A4A !important;
+}
+
+.light .stroke-cyan-400 {
+  stroke: #3E6690 !important;
+}
+
+.light .stroke-amber-400 {
+  stroke: #A97B1F !important;
+}
+
+.light .stroke-rose-400 {
+  stroke: #9C4436 !important;
+}
+
+/* Offline: Text #8C8370, Background #EAE4D2 */
+.light .offline-badge {
+  background-color: #EAE4D2 !important;
+  color: #8C8370 !important;
+  border-color: #D4CBB6 !important;
+}
+
+/* Active Navigation Item in Light Mode */
+.light #app-sidebar button[class*="bg-cyan-500/10"] {
+  background-color: #E4EAF1 !important;
+  color: #2F4C69 !important;
+  border-color: #4C79A8 !important;
+  border-left: 3px solid #2F4C69 !important;
+}
+
+.light #app-sidebar button:hover:not([class*="bg-cyan-500/10"]) {
+  background-color: #F6F1E3 !important;
+  color: #2B2620 !important;
+}
+
+/* Interactive Controls & Inputs */
+.light input,
+.light select,
+.light textarea {
+  background-color: #FDFCF8 !important;
+  border-color: #E4DCBE !important;
+  color: #2B2620 !important;
+  border-radius: 3px !important;
+}
+
+/* Custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -20,16 +399,29 @@
   background: rgba(15, 23, 42, 0.6);
 }
 
+.light ::-webkit-scrollbar-track {
+  background: #F6F1E3;
+}
+
 ::-webkit-scrollbar-thumb {
   background: rgba(51, 65, 85, 0.8);
   border-radius: 9999px;
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: #E4DCBE;
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 116, 139, 1);
 }
 
-/* Subtle grid pattern background */
+.light ::-webkit-scrollbar-thumb:hover {
+  background: #948A73;
+}
+
+/* Grid pattern */
 .bg-grid-pattern {
   background-size: 24px 24px;
   background-image: 
@@ -37,3 +429,8 @@
     linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
+.light .bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(92, 84, 69, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(92, 84, 69, 0.04) 1px, transparent 1px);
+}

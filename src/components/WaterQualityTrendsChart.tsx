@@ -18,6 +18,7 @@ interface WaterQualityTrendsChartProps {
   selectedRange: TimeRange;
   onRangeChange: (range: TimeRange) => void;
   onRefresh?: () => void;
+  theme?: 'dark' | 'light';
 }
 
 export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = ({
@@ -25,7 +26,10 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
   selectedRange,
   onRangeChange,
   onRefresh,
+  theme = 'dark',
 }) => {
+  const isLight = theme === 'light';
+
   const [visibleSeries, setVisibleSeries] = useState<{
     pH: boolean;
     tds: boolean;
@@ -44,14 +48,30 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
     setVisibleSeries((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  // Theme-aware series colors
+  const colors = {
+    pH: isLight ? '#4C7A4A' : '#10b981',
+    tds: isLight ? '#3E6690' : '#3b82f6',
+    turbidity: isLight ? '#A97B1F' : '#f59e0b',
+    temperature: isLight ? '#7C5295' : '#8b5cf6',
+    wqi: isLight ? '#2F4C69' : '#06b6d4',
+    grid: isLight ? '#E4DCBE' : '#1e293b',
+    axis: isLight ? '#948A73' : '#64748b',
+    axisLine: isLight ? '#E4DCBE' : '#334155',
+  };
+
   // Custom formatted tooltip for industrial readability
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-slate-900/95 border border-slate-700/80 p-3 rounded-lg shadow-xl text-xs backdrop-blur-md min-w-[200px]">
-          <div className="font-mono font-semibold text-slate-300 border-b border-slate-800 pb-1.5 mb-2 flex items-center justify-between">
+        <div className={`p-3 rounded-lg shadow-xl text-xs backdrop-blur-md min-w-[200px] border ${
+          isLight ? 'bg-[#FCFAF3] border-[#DCD2B8] text-[#2B2620]' : 'bg-slate-900/95 border-slate-700/80 text-slate-100'
+        }`}>
+          <div className={`font-mono font-semibold pb-1.5 mb-2 flex items-center justify-between border-b ${
+            isLight ? 'border-[#DCD2B8] text-[#5C5445]' : 'border-slate-800 text-slate-300'
+          }`}>
             <span>Timestamp</span>
-            <span className="text-cyan-400">{label}</span>
+            <span className={isLight ? 'text-[#3E6690] font-bold' : 'text-cyan-400'}>{label}</span>
           </div>
           <div className="space-y-1.5 font-mono">
             {payload.map((item: any) => {
@@ -64,14 +84,14 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
 
               return (
                 <div key={item.dataKey} className="flex items-center justify-between gap-3">
-                  <span className="flex items-center gap-1.5 text-slate-400">
+                  <span className={`flex items-center gap-1.5 ${isLight ? 'text-[#5C5445]' : 'text-slate-400'}`}>
                     <span
                       className="w-2 h-2 rounded-full inline-block"
                       style={{ backgroundColor: item.color }}
                     />
                     {item.name}:
                   </span>
-                  <span className="font-bold text-white">
+                  <span className={`font-bold ${isLight ? 'text-[#2B2620]' : 'text-white'}`}>
                     {item.value} {unit}
                   </span>
                 </div>
@@ -209,21 +229,21 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
       <div className="h-72 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 10, right: 30, left: -10, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
             <XAxis
               dataKey="timeLabel"
-              stroke="#64748b"
-              tick={{ fontSize: 11, fill: '#64748b', fontFamily: 'JetBrains Mono' }}
+              stroke={colors.axis}
+              tick={{ fontSize: 11, fill: colors.axis, fontFamily: isLight ? 'IBM Plex Mono' : 'JetBrains Mono' }}
               tickLine={false}
-              axisLine={{ stroke: '#334155' }}
+              axisLine={{ stroke: colors.axisLine }}
             />
             {/* Primary Left Y Axis for Normalized / Scaled metrics */}
             <YAxis
               yAxisId="left"
-              stroke="#64748b"
-              tick={{ fontSize: 11, fill: '#64748b', fontFamily: 'JetBrains Mono' }}
+              stroke={colors.axis}
+              tick={{ fontSize: 11, fill: colors.axis, fontFamily: isLight ? 'IBM Plex Mono' : 'JetBrains Mono' }}
               tickLine={false}
-              axisLine={{ stroke: '#334155' }}
+              axisLine={{ stroke: colors.axisLine }}
               domain={[0, 'auto']}
             />
             {/* Secondary Right Y Axis for TDS (high magnitude) */}
@@ -231,10 +251,10 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
               <YAxis
                 yAxisId="right"
                 orientation="right"
-                stroke="#3b82f6"
-                tick={{ fontSize: 11, fill: '#60a5fa', fontFamily: 'JetBrains Mono' }}
+                stroke={colors.tds}
+                tick={{ fontSize: 11, fill: colors.tds, fontFamily: isLight ? 'IBM Plex Mono' : 'JetBrains Mono' }}
                 tickLine={false}
-                axisLine={{ stroke: '#1e3a8a' }}
+                axisLine={{ stroke: colors.axisLine }}
                 domain={[100, 350]}
                 unit=" ppm"
               />
@@ -247,11 +267,11 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
               <ReferenceLine
                 yAxisId="left"
                 y={5.0}
-                stroke="#ef4444"
+                stroke={isLight ? '#9C4436' : '#ef4444'}
                 strokeDasharray="4 4"
                 label={{
                   value: 'BIS Turbidity Max (5.0 NTU)',
-                  fill: '#f87171',
+                  fill: isLight ? '#9C4436' : '#f87171',
                   fontSize: 10,
                   position: 'insideTopLeft',
                 }}
@@ -264,10 +284,10 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
                 type="monotone"
                 dataKey="pH"
                 name="pH Level"
-                stroke="#10b981"
+                stroke={colors.pH}
                 strokeWidth={2.2}
                 dot={false}
-                activeDot={{ r: 5, stroke: '#064e3b', strokeWidth: 2 }}
+                activeDot={{ r: 5, stroke: isLight ? '#2B2620' : '#064e3b', strokeWidth: 2 }}
               />
             )}
 
@@ -277,10 +297,10 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
                 type="monotone"
                 dataKey="tds"
                 name="TDS"
-                stroke="#3b82f6"
+                stroke={colors.tds}
                 strokeWidth={2.2}
                 dot={false}
-                activeDot={{ r: 5, stroke: '#1e3a8a', strokeWidth: 2 }}
+                activeDot={{ r: 5, stroke: isLight ? '#2B2620' : '#1e3a8a', strokeWidth: 2 }}
               />
             )}
 
@@ -290,10 +310,10 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
                 type="monotone"
                 dataKey="turbidity"
                 name="Turbidity"
-                stroke="#f59e0b"
+                stroke={colors.turbidity}
                 strokeWidth={2.2}
                 dot={false}
-                activeDot={{ r: 5, stroke: '#78350f', strokeWidth: 2 }}
+                activeDot={{ r: 5, stroke: isLight ? '#2B2620' : '#78350f', strokeWidth: 2 }}
               />
             )}
 
@@ -303,11 +323,11 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
                 type="monotone"
                 dataKey="temperature"
                 name="Temperature"
-                stroke="#8b5cf6"
+                stroke={colors.temperature}
                 strokeWidth={2}
                 strokeDasharray="3 3"
                 dot={false}
-                activeDot={{ r: 4, stroke: '#4c1d95', strokeWidth: 2 }}
+                activeDot={{ r: 4, stroke: isLight ? '#2B2620' : '#4c1d95', strokeWidth: 2 }}
               />
             )}
 
@@ -317,10 +337,10 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
                 type="monotone"
                 dataKey="wqi"
                 name="WQI Potability Index"
-                stroke="#06b6d4"
+                stroke={colors.wqi}
                 strokeWidth={2.5}
                 dot={false}
-                activeDot={{ r: 5, stroke: '#164e63', strokeWidth: 2 }}
+                activeDot={{ r: 5, stroke: isLight ? '#2B2620' : '#164e63', strokeWidth: 2 }}
               />
             )}
           </LineChart>

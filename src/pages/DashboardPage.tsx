@@ -31,6 +31,7 @@ interface DashboardPageProps {
   onRefreshTelemetry: () => void;
   onAcknowledgeAlert: (id: string) => void;
   onNavigate: (page: NavigationPageId) => void;
+  theme?: 'dark' | 'light';
 }
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({
@@ -44,18 +45,22 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   onRefreshTelemetry,
   onAcknowledgeAlert,
   onNavigate,
+  theme = 'dark',
 }) => {
   return (
     <div id="dashboard-main-view" className="space-y-6 max-w-7xl mx-auto pb-8">
       {/* 1. Dashboard Sub-Banner / Live Telemetry Ingest Info */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800/80 shadow-md">
+      <div
+        id="dashboard-telemetry-banner"
+        className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-950 border border-slate-800/80 shadow-md transition-colors"
+      >
         <div className="flex items-center gap-3.5">
           <div className="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 shadow-inner">
             <Droplets className="w-5 h-5" />
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-base font-bold text-white tracking-tight">
+              <h2 className="text-base font-bold text-white tracking-tight ledger-heading">
                 Municipal Water Transmission Telemetry Overview
               </h2>
               <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -71,6 +76,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 
         <div className="flex items-center gap-2">
           <button
+            id="banner-btn-contamination"
             onClick={() => onNavigate('contamination-localization')}
             className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
           >
@@ -78,6 +84,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             Contamination AI
           </button>
           <button
+            id="banner-btn-bis"
             onClick={() => onNavigate('bis-compliance')}
             className="px-3 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-semibold flex items-center gap-1.5 transition-colors"
           >
@@ -103,6 +110,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           selectedRange={selectedRange}
           onRangeChange={onRangeChange}
           onRefresh={onRefreshTelemetry}
+          theme={theme}
         />
       </section>
 

@@ -20,6 +20,31 @@ export default function App() {
   const [timeRange, setTimeRange] = useState<TimeRange>('24H');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string>('Just now');
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('swpm_theme');
+    return saved === 'light' ? 'light' : 'dark';
+  });
+
+  // Sync theme to document element and localStorage
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      document.body.classList.add('light');
+      document.body.classList.remove('dark');
+      localStorage.setItem('swpm_theme', 'light');
+    } else {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      document.body.classList.add('dark');
+      document.body.classList.remove('light');
+      localStorage.setItem('swpm_theme', 'dark');
+    }
+  }, [theme]);
+
+  const handleToggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
 
   // Reactive State from Service
   const [kpis, setKpis] = useState<KPISummary>(WaterMonitoringService.getKPISummary());
@@ -89,6 +114,8 @@ export default function App() {
           isRefreshing={isRefreshing}
           alerts={alerts}
           onNavigateToAlerts={() => setCurrentPage('alerts')}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
         />
 
         {/* Main Routed Content Area */}
@@ -108,6 +135,7 @@ export default function App() {
                 setCurrentPage(page);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
+              theme={theme}
             />
           ) : (
             <PlaceholderPage

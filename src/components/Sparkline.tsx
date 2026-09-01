@@ -67,7 +67,7 @@ export const Sparkline: React.FC<SparklineProps> = ({
             cy={points[points.length - 1].y}
             r="3"
             fill={color}
-            stroke="#0f172a"
+            stroke="var(--bg-surface, #0f172a)"
             strokeWidth="1.5"
           />
         )}
