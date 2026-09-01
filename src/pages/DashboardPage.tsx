@@ -115,14 +115,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       </section>
 
       {/* 4. Risk Overview & Active Alerts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Risk Overview Score (28 / 100 — LOW RISK) */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 flex flex-col">
           <RiskOverviewSection assessment={riskAssessment} />
         </div>
 
         {/* Active Alerts Panel */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-5 flex flex-col">
           <ActiveAlertsSection
             alerts={alerts}
             onAcknowledgeAlert={onAcknowledgeAlert}

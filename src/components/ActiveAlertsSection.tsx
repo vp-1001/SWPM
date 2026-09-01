@@ -84,10 +84,10 @@ export const ActiveAlertsSection: React.FC<ActiveAlertsSectionProps> = ({
   return (
     <div
       id="active-alerts-section"
-      className="p-4 sm:p-5 rounded-xl bg-slate-900/90 border border-slate-800/90 shadow-sm"
+      className="p-4 sm:p-5 rounded-xl bg-slate-900/90 border border-slate-800/90 shadow-sm h-[600px] flex flex-col"
     >
       {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-800/80 shrink-0">
         <div>
           <div className="flex items-center gap-2">
             <ShieldAlert className="w-4 h-4 text-amber-400" />
@@ -101,7 +101,7 @@ export const ActiveAlertsSection: React.FC<ActiveAlertsSectionProps> = ({
         </div>
 
         {/* Severity Filter */}
-        <div className="flex items-center gap-1 p-1 bg-slate-950/80 rounded-lg border border-slate-800 text-xs font-mono">
+        <div className="flex items-center gap-1 p-1 bg-slate-950/80 rounded-lg border border-slate-800 text-xs font-mono shrink-0">
           <Filter className="w-3 h-3 text-slate-400 ml-1.5 mr-0.5" />
           <button
             onClick={() => setFilterSeverity('all')}
@@ -136,8 +136,8 @@ export const ActiveAlertsSection: React.FC<ActiveAlertsSectionProps> = ({
         </div>
       </div>
 
-      {/* Alerts Feed */}
-      <div className="mt-4 space-y-3">
+      {/* Alerts Feed with Scroll Bar */}
+      <div className="mt-4 space-y-3 flex-1 overflow-y-auto min-h-0 pr-1.5 custom-scrollbar">
         {filteredAlerts.length === 0 ? (
           <div className="py-8 text-center text-slate-400 text-xs font-mono bg-slate-950/40 rounded-lg border border-slate-800/60 flex flex-col items-center gap-2">
             <CheckCircle2 className="w-8 h-8 text-emerald-400" />
