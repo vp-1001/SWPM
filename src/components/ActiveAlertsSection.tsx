@@ -84,7 +84,7 @@ export const ActiveAlertsSection: React.FC<ActiveAlertsSectionProps> = ({
   return (
     <div
       id="active-alerts-section"
-      className="p-4 sm:p-5 rounded-xl bg-slate-900/90 border border-slate-800/90 shadow-sm h-[600px] flex flex-col"
+      className="p-4 sm:p-5 rounded-xl bg-slate-900/90 border border-slate-800/90 shadow-sm h-[513.875px] flex flex-col"
     >
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-800/80 shrink-0">

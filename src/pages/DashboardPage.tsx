@@ -4,12 +4,15 @@ import {
   KPISummary,
   MonitoringNode,
   NavigationPageId,
+  PipelineGraph,
+  NodeTestResult,
   RiskAssessment,
   TimeRange,
   TimeSeriesDataPoint,
 } from '../types';
 import { KPICardsGrid } from '../components/KPICardsGrid';
 import { WaterQualityTrendsChart } from '../components/WaterQualityTrendsChart';
+import { PipelineNetworkStatusSection } from '../components/PipelineNetworkStatusSection';
 import { NetworkHealthSection } from '../components/NetworkHealthSection';
 import { ActiveAlertsSection } from '../components/ActiveAlertsSection';
 import { RiskOverviewSection } from '../components/RiskOverviewSection';
@@ -27,6 +30,8 @@ interface DashboardPageProps {
   riskAssessment: RiskAssessment;
   trendData: TimeSeriesDataPoint[];
   selectedRange: TimeRange;
+  pipelineGraph: PipelineGraph;
+  onUpdatePipelineGraph: (graph: PipelineGraph, testResult?: NodeTestResult) => void;
   onRangeChange: (range: TimeRange) => void;
   onRefreshTelemetry: () => void;
   onAcknowledgeAlert: (id: string) => void;
@@ -41,6 +46,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   riskAssessment,
   trendData,
   selectedRange,
+  pipelineGraph,
+  onUpdatePipelineGraph,
   onRangeChange,
   onRefreshTelemetry,
   onAcknowledgeAlert,
@@ -103,7 +110,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         />
       </section>
 
-      {/* 3. Water Quality Trends Multi-Line Chart (Responsive 24H / 7D / 30D) */}
+      {/* 3. Water-Pipeline Topology & Downstream Impact Section */}
+      <section aria-label="Water-Pipeline Topology & Downstream Impact">
+        <PipelineNetworkStatusSection
+          graph={pipelineGraph}
+          onUpdateGraph={onUpdatePipelineGraph}
+          onNavigateToNetworkMap={() => onNavigate('network-map')}
+        />
+      </section>
+
+      {/* 4. Water Quality Trends Multi-Line Chart (Responsive 24H / 7D / 30D) */}
       <section aria-label="Water Quality Trends Chart">
         <WaterQualityTrendsChart
           data={trendData}
@@ -114,7 +130,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         />
       </section>
 
-      {/* 4. Risk Overview & Active Alerts Grid */}
+      {/* 5. Risk Overview & Active Alerts Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         {/* Risk Overview Score (28 / 100 — LOW RISK) */}
         <div className="lg:col-span-7 flex flex-col">
@@ -131,10 +147,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         </div>
       </div>
 
-      {/* 5. Network Health Table & Node Telemetry */}
+      {/* 6. Network Health Table & Node Telemetry */}
       <section aria-label="Network Health & Monitoring Nodes">
         <NetworkHealthSection nodes={nodes} />
       </section>
     </div>
   );
 };
+

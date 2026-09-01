@@ -149,3 +149,98 @@ export interface NavItemConfig {
   badgeVariant?: 'blue' | 'amber' | 'emerald' | 'rose' | 'slate';
   section?: 'core' | 'intelligence' | 'compliance_system';
 }
+
+// ==========================================
+// Pipeline Topology & Propagation Data Models
+// ==========================================
+
+export type PipelineNodeType = 'source' | 'node' | 'junction' | 'destination';
+export type PipelineNodeStatus =
+  | 'healthy'
+  | 'warning'
+  | 'critical'
+  | 'potentially_affected'
+  | 'offline';
+
+export interface PipelineNode {
+  id: string; // e.g. "NODE-01", "PLANT-01", "DEST-DUMDUM"
+  name: string; // e.g. "Palta Raw Intake Unit"
+  code: string; // e.g. "NODE-1"
+  location: string;
+  zone: string;
+  type: PipelineNodeType;
+  status: PipelineNodeStatus;
+  sensorStatus: SensorQualityStatus;
+  coordinates: NodeCoordinates;
+  readings: SensorReadingsSnapshot;
+  batteryLevel?: number;
+  signalStrength?: number;
+  pressure?: number;
+  flowRate?: number;
+  pipeDiameterMm?: number;
+  pipeMaterial?: string;
+  lastTested?: string;
+  lastTestResult?: 'pass' | 'warning' | 'critical';
+  anomalyReason?: string;
+  pathwayIds: string[];
+  isFailedSource?: boolean; // Whether this node itself failed quality check
+}
+
+export interface PipelineEdge {
+  id: string;
+  fromNodeId: string;
+  toNodeId: string;
+  pathwayId: string;
+  flowDirection: 'downstream';
+  distanceKm?: number;
+  flowRateM3h?: number;
+  pipeDiameterMm?: number;
+  status?: 'normal' | 'impacted' | 'warning';
+}
+
+export interface Pathway {
+  id: string;
+  name: string;
+  code: string;
+  sourceNodeId: string;
+  destination: string;
+  destinationNodeId: string;
+  nodeIds: string[];
+  edgeIds: string[];
+  status: 'normal' | 'impacted' | 'warning';
+  criticalNodeCount: number;
+  affectedNodeCount: number;
+  healthyNodeCount: number;
+  description: string;
+}
+
+export interface NodeTestResult {
+  nodeId: string;
+  timestamp: string;
+  status: 'pass' | 'warning' | 'critical';
+  readings: SensorReadingsSnapshot;
+  violations: string[];
+  summaryMessage: string;
+  isAbnormal: boolean;
+  affectedDownstreamNodeIds: string[];
+  impactedDestinationIds: string[];
+}
+
+export interface DownstreamImpactResult {
+  failedNodeId: string;
+  downstreamNodeIds: string[];
+  upstreamNodeIds: string[];
+  impactedPathwayIds: string[];
+  impactedDestinations: string[];
+  severity: AlertSeverity;
+  description: string;
+}
+
+export interface PipelineGraph {
+  nodes: PipelineNode[];
+  edges: PipelineEdge[];
+  pathways: Pathway[];
+}
+
+export type TopologyScenario = 'normal' | 'node2_fail' | 'node3_fail' | 'node6_fail' | 'recovery';
+

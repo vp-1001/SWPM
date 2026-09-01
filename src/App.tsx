@@ -9,9 +9,12 @@ import {
   TimeSeriesDataPoint,
 } from './types';
 import { WaterMonitoringService } from './services/mockData';
+import { INITIAL_PIPELINE_GRAPH } from './services/topologyService';
+import { PipelineGraph, NodeTestResult } from './types';
 import { AppSidebar } from './components/AppSidebar';
 import { AppHeader } from './components/AppHeader';
 import { DashboardPage } from './pages/DashboardPage';
+import { NetworkMapPage } from './pages/NetworkMapPage';
 import { PlaceholderPage } from './components/PlaceholderPage';
 
 export default function App() {
@@ -20,6 +23,7 @@ export default function App() {
   const [timeRange, setTimeRange] = useState<TimeRange>('24H');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<string>('Just now');
+  const [pipelineGraph, setPipelineGraph] = useState<PipelineGraph>(INITIAL_PIPELINE_GRAPH);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('swpm_theme');
     return saved === 'light' ? 'light' : 'dark';
@@ -91,6 +95,37 @@ export default function App() {
     setAlerts([...WaterMonitoringService.getAlerts()]);
   };
 
+  // Pipeline Topology Graph Update Handler
+  const handleUpdatePipelineGraph = (updatedGraph: PipelineGraph, testResult?: NodeTestResult) => {
+    setPipelineGraph(updatedGraph);
+
+    if (testResult?.isAbnormal) {
+      const targetNode = updatedGraph.nodes.find((n) => n.id === testResult.nodeId);
+      const newAlert: AlertItem = {
+        id: `ALT-TOP-${Date.now().toString().slice(-4)}`,
+        severity: testResult.status === 'critical' ? 'critical' : 'warning',
+        node: testResult.nodeId,
+        nodeName: targetNode?.name || testResult.nodeId,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }),
+        timeAgo: 'Just now',
+        title: `${testResult.status === 'critical' ? 'CRITICAL' : 'WARNING'} — Quality Anomaly at ${targetNode?.code || testResult.nodeId}`,
+        description: testResult.summaryMessage,
+        status: 'active',
+        parameterAffected: testResult.violations[0]?.split(' ')[0] || 'Quality',
+        observedValue: `Turbidity: ${testResult.readings.turbidity} NTU`,
+        thresholdValue: 'BIS IS 10500 Ceiling',
+      };
+      setAlerts((prev) => [newAlert, ...prev]);
+    } else if (testResult && !testResult.isAbnormal) {
+      // Clear or resolve alerts for this node
+      setAlerts((prev) =>
+        prev.map((a) =>
+          a.node === testResult.nodeId ? { ...a, status: 'resolved' } : a
+        )
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col antialiased selection:bg-cyan-500/30 selection:text-cyan-200">
       {/* 1. Navigation Sidebar */}
@@ -128,6 +163,8 @@ export default function App() {
               riskAssessment={riskAssessment}
               trendData={trendData}
               selectedRange={timeRange}
+              pipelineGraph={pipelineGraph}
+              onUpdatePipelineGraph={handleUpdatePipelineGraph}
               onRangeChange={setTimeRange}
               onRefreshTelemetry={handleRefresh}
               onAcknowledgeAlert={handleAcknowledgeAlert}
@@ -136,6 +173,12 @@ export default function App() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               theme={theme}
+            />
+          ) : currentPage === 'network-map' ? (
+            <NetworkMapPage
+              graph={pipelineGraph}
+              onUpdateGraph={handleUpdatePipelineGraph}
+              onBackToDashboard={() => setCurrentPage('dashboard')}
             />
           ) : (
             <PlaceholderPage
