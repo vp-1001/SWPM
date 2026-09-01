@@ -1,0 +1,7 @@
+{
+  "name": "SWPM – Smart Water Pipeline Monitoring",
+  "description": "Enterprise SCADA IoT platform for real-time water quality monitoring, risk assessment, and pipeline network telemetry.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
