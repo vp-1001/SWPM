@@ -228,20 +228,22 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
       {/* Main Chart Canvas */}
       <div className="h-72 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 10, right: 30, left: -10, bottom: 0 }}>
+          <LineChart data={data} margin={{ top: 10, right: 36, left: -10, bottom: 4 }}>
             <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} vertical={false} />
             <XAxis
               dataKey="timeLabel"
               stroke={colors.axis}
-              tick={{ fontSize: 11, fill: colors.axis, fontFamily: isLight ? 'IBM Plex Mono' : 'JetBrains Mono' }}
+              tick={{ fontSize: 10, fill: colors.axis, fontFamily: isLight ? 'IBM Plex Mono' : 'JetBrains Mono' }}
               tickLine={false}
               axisLine={{ stroke: colors.axisLine }}
+              interval="preserveStartEnd"
+              minTickGap={28}
             />
             {/* Primary Left Y Axis for Normalized / Scaled metrics */}
             <YAxis
               yAxisId="left"
               stroke={colors.axis}
-              tick={{ fontSize: 11, fill: colors.axis, fontFamily: isLight ? 'IBM Plex Mono' : 'JetBrains Mono' }}
+              tick={{ fontSize: 10, fill: colors.axis, fontFamily: isLight ? 'IBM Plex Mono' : 'JetBrains Mono' }}
               tickLine={false}
               axisLine={{ stroke: colors.axisLine }}
               domain={[0, 'auto']}
@@ -252,7 +254,7 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
                 yAxisId="right"
                 orientation="right"
                 stroke={colors.tds}
-                tick={{ fontSize: 11, fill: colors.tds, fontFamily: isLight ? 'IBM Plex Mono' : 'JetBrains Mono' }}
+                tick={{ fontSize: 10, fill: colors.tds, fontFamily: isLight ? 'IBM Plex Mono' : 'JetBrains Mono' }}
                 tickLine={false}
                 axisLine={{ stroke: colors.axisLine }}
                 domain={[100, 350]}

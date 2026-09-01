@@ -24,7 +24,7 @@ export const RiskOverviewSection: React.FC<RiskOverviewSectionProps> = ({
   return (
     <div
       id="risk-overview-card"
-      className="bg-slate-900/90 border border-slate-800/80 rounded-xl p-5 shadow-sm backdrop-blur-sm h-[513.875px] flex flex-col justify-between"
+      className="bg-slate-900/90 border border-slate-800/80 rounded-xl p-4 sm:p-5 shadow-sm backdrop-blur-sm h-auto lg:h-[513.875px] min-h-[480px] flex flex-col justify-between"
     >
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-4 border-b border-slate-800/80">
