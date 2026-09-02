@@ -1,5 +1,10 @@
 # SWPM - Smart Water Pipeline Monitoring System
 
+## Live Deployment
+
+- Frontend (Vercel): http://swpm-phi.vercel.app/
+- Backend (Render): https://swpm-backend-mo0z.onrender.com/
+
 ## ESP32 Hardware Integration & Telemetry Architecture
 
 SWPM connects physical ESP32 water quality hardware measuring **pH**, **TDS**, **Temperature**, and **Turbidity (GPIO 32)** to the SWPM SCADA dashboard via USB Serial (CP210x UART) @ 115200 Baud.
