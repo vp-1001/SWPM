@@ -402,11 +402,36 @@ class HardwareService {
 
   // REST / Virtual Calls
   public async fetchPorts(): Promise<HardwarePortInfo[]> {
-    // First return immediate virtual ports
-    return DEFAULT_PORTS;
+    try {
+      const response = await fetch(`${API_BASE}/ports`);
+      if (!response.ok) throw new Error(`Port scan failed with HTTP ${response.status}`);
+      const result = await response.json();
+      return result.ports || [];
+    } catch {
+      return DEFAULT_PORTS;
+    }
   }
 
   public async connectPort(port: string, baudRate: number = 115200): Promise<{ success: boolean; error?: string }> {
+    try {
+      const response = await fetch(`${API_BASE}/connect`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ port, baudRate }),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        return { success: false, error: result.error || `Failed to connect to ${port}` };
+      }
+
+      this.mode = 'HARDWARE';
+      this.hardwareStatus = result.status;
+      this.notifyStatus();
+      return result;
+    } catch {
+      // Keep the local simulation fallback available when the backend is offline.
+    }
+
     this.mode = 'HARDWARE';
     this.hardwareStatus = {
       ...this.hardwareStatus,
