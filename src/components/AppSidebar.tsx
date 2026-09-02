@@ -69,14 +69,6 @@ export const NAV_ITEMS: NavItemConfig[] = [
     section: 'intelligence',
   },
   {
-    id: 'bis-compliance',
-    label: 'BIS Compliance',
-    icon: 'Award',
-    badge: 'IS 10500',
-    badgeVariant: 'slate',
-    section: 'intelligence',
-  },
-  {
     id: 'alerts',
     label: 'Alerts',
     icon: 'AlertTriangle',
@@ -94,12 +86,6 @@ export const NAV_ITEMS: NavItemConfig[] = [
     id: 'reports',
     label: 'Reports',
     icon: 'FileText',
-    section: 'compliance_system',
-  },
-  {
-    id: 'system-architecture',
-    label: 'System Architecture',
-    icon: 'Server',
     section: 'compliance_system',
   },
 ];
@@ -128,16 +114,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         return <Cpu className={className} />;
       case 'Crosshair':
         return <Crosshair className={className} />;
-      case 'Award':
-        return <Award className={className} />;
       case 'AlertTriangle':
         return <AlertTriangle className={className} />;
       case 'RadioTower':
         return <RadioTower className={className} />;
       case 'FileText':
         return <FileText className={className} />;
-      case 'Server':
-        return <Server className={className} />;
       default:
         return <Activity className={className} />;
     }

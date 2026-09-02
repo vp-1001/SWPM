@@ -15,7 +15,14 @@ import { PipelineGraph, NodeTestResult } from './types';
 import { AppSidebar } from './components/AppSidebar';
 import { AppHeader } from './components/AppHeader';
 import { DashboardPage } from './pages/DashboardPage';
+import { LiveMonitoringPage } from './pages/LiveMonitoringPage';
 import { NetworkMapPage } from './pages/NetworkMapPage';
+import { AnalyticsPage } from './pages/AnalyticsPage';
+import { AIIntelligencePage } from './pages/AIIntelligencePage';
+import { ContaminationLocalizationPage } from './pages/ContaminationLocalizationPage';
+import { AlertsPage } from './pages/AlertsPage';
+import { AdvancedDetectionPage } from './pages/AdvancedDetectionPage';
+import { ReportsPage } from './pages/ReportsPage';
 import { PlaceholderPage } from './components/PlaceholderPage';
 
 export default function App() {
@@ -281,12 +288,48 @@ export default function App() {
               }}
               theme={theme}
             />
+          ) : currentPage === 'live-monitoring' ? (
+            <LiveMonitoringPage
+              kpis={kpis}
+              currentDecision={currentDecision}
+              onNavigate={(page) => {
+                setCurrentPage(page);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onRefreshTelemetry={handleRefresh}
+            />
           ) : currentPage === 'network-map' ? (
             <NetworkMapPage
               graph={pipelineGraph}
               onUpdateGraph={handleUpdatePipelineGraph}
               onBackToDashboard={() => setCurrentPage('dashboard')}
             />
+          ) : currentPage === 'analytics' ? (
+            <AnalyticsPage
+              trendData={trendData}
+              selectedRange={timeRange}
+              onRangeChange={setTimeRange}
+              onRefresh={handleRefresh}
+              currentDecision={currentDecision}
+              theme={theme}
+            />
+          ) : currentPage === 'ai-intelligence' ? (
+            <AIIntelligencePage currentDecision={currentDecision} />
+          ) : currentPage === 'contamination-localization' ? (
+            <ContaminationLocalizationPage nodes={nodes} />
+          ) : currentPage === 'alerts' ? (
+            <AlertsPage
+              alerts={alerts}
+              onAcknowledgeAlert={handleAcknowledgeAlert}
+              onNavigate={(page) => {
+                setCurrentPage(page);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          ) : currentPage === 'advanced-detection' ? (
+            <AdvancedDetectionPage nodes={nodes} />
+          ) : currentPage === 'reports' ? (
+            <ReportsPage assessment={riskAssessment} />
           ) : (
             <PlaceholderPage
               pageId={currentPage}

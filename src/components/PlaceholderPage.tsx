@@ -98,45 +98,6 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
           ],
           phase: 'Phase 3 Architecture',
         };
-      case 'bis-compliance':
-        return {
-          title: 'BIS IS 10500:2012 Drinking Water Audit',
-          subtitle: 'Statutory compliance validation engine mapped against Bureau of Indian Standards potability criteria.',
-          icon: <ShieldCheck className="w-8 h-8 text-emerald-400" />,
-          features: [
-            'Automated BIS IS 10500:2012 parameter rule checking',
-            'Desirable vs Permissible limit violation logs',
-            'Government laboratory certificate generation',
-            'Water Safety Plan (WSP) regulatory reporting',
-          ],
-          phase: 'Phase 3 Architecture',
-        };
-      case 'alerts':
-        return {
-          title: 'Alarm Dispatch & Incident Management Center',
-          subtitle: 'Centralized SCADA alarm queue with escalation policies, SMS/email relays, and on-call engineer dispatch.',
-          icon: <BellRing className="w-8 h-8 text-amber-400" />,
-          features: [
-            'Real-time multi-tier alarm escalation engine',
-            'SOP-driven diagnostic workflows for field engineers',
-            'Historical root-cause incident audit log',
-            'Automated SMS/Email broadcast relays',
-          ],
-          phase: 'Operational Queue Linked in Dashboard',
-        };
-      case 'advanced-detection':
-        return {
-          title: 'Advanced Hydro-Acoustic & Spectral Detection',
-          subtitle: 'High-frequency acoustic leak noise correlation and multi-wavelength optical fingerprinting.',
-          icon: <SearchCode className="w-8 h-8 text-purple-400" />,
-          features: [
-            'Cross-correlation acoustic leak detection',
-            'Fourier transform spectral power density analysis',
-            'Turbidity scatter matrix at 860nm NIR',
-            'Micro-leak detection before catastrophic pipe rupture',
-          ],
-          phase: 'Phase 4 Architecture',
-        };
       case 'reports':
         return {
           title: 'Compliance & Municipal Reporting Suite',
@@ -147,19 +108,6 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
             'Export to PDF, CSV, and secure cryptographic audit ledger',
             'EPA / CPCB / WBPCB standardized environmental reporting',
             'Custom report schedule generator',
-          ],
-          phase: 'Phase 4 Architecture',
-        };
-      case 'system-architecture':
-        return {
-          title: 'System Architecture & IoT Hardware Topology',
-          subtitle: 'Hardware specifications, Modbus/MQTT brokers, edge microcontrollers, and edge security.',
-          icon: <Cpu className="w-8 h-8 text-cyan-400" />,
-          features: [
-            'Edge microcontroller schematic & RS-485 Modbus topology',
-            'MQTT / CoAP low-bandwidth telemetry protocol stack',
-            'End-to-end TLS 1.3 cryptographic key rotation',
-            'Solar power management & battery health telemetry',
           ],
           phase: 'Phase 4 Architecture',
         };

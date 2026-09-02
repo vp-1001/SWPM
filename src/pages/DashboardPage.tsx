@@ -133,12 +133,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             Contamination AI
           </button>
           <button
-            id="banner-btn-bis"
-            onClick={() => onNavigate('bis-compliance')}
+            id="banner-btn-analytics"
+            onClick={() => onNavigate('analytics')}
             className="px-3 py-1.5 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-semibold flex items-center gap-1.5 transition-colors"
           >
             <ShieldCheck className="w-3.5 h-3.5" />
-            BIS IS 10500 Audit
+            Quality Analytics
           </button>
         </div>
       </div>

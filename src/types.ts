@@ -199,11 +199,9 @@ export type NavigationPageId =
   | 'analytics'
   | 'ai-intelligence'
   | 'contamination-localization'
-  | 'bis-compliance'
   | 'alerts'
   | 'advanced-detection'
-  | 'reports'
-  | 'system-architecture';
+  | 'reports';
 
 export interface NavItemConfig {
   id: NavigationPageId;
