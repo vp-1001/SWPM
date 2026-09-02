@@ -22,6 +22,22 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    name: 'SWPM Backend',
+    status: 'running',
+    mode: isSimulationMode ? 'SIMULATION' : 'HARDWARE',
+    endpoints: [
+      '/api/status',
+      '/api/readings/latest',
+      '/api/readings/history',
+      '/api/ports',
+      '/api/simulation/scenario',
+    ],
+  });
+});
+
 // Services Initialization
 const decisionEngine = new WaterQualityDecisionEngine();
 const serialService = new SerialHardwareService();
