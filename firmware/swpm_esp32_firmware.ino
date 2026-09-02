@@ -108,7 +108,7 @@ float readTemperature() {
   float temperature = tempSensor.getTempCByIndex(0);
 
   if (temperature == DEVICE_DISCONNECTED_C || temperature < -50) {
-    return 25.0; // Fallback nominal temp if sensor disconnected
+    return 27.0; // Fallback nominal temp if sensor disconnected
   }
   return temperature;
 }

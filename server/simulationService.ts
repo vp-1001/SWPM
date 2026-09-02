@@ -21,7 +21,7 @@ export class SimulationService {
     // Base deterministic values without synthetic Math.random noise
     let basePh = 7.2;
     let baseTds = 250;
-    let baseTemp = 25.4;
+    let baseTemp = 27;
     let baseTurbidity = 0.5;
     let baseTurbRaw = 2500;
     let baseTurbVoltage = 2.02;
