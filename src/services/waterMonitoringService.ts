@@ -24,13 +24,8 @@ class WaterMonitoringService {
   private lastUpdatedDate: Date = new Date();
 
   constructor() {
-    if (typeof window !== 'undefined') {
-      setInterval(() => {
-        if (this.simulationActive) {
-          this.applyLiveJitter();
-        }
-      }, 4000);
-    }
+    // Disabled mock jitter loop so only true hardware telemetry or user triggered scenario is used
+    this.simulationActive = false;
   }
 
   public subscribe(listener: () => void): () => void {

@@ -3,7 +3,71 @@ export type RiskLevel = 'low' | 'moderate' | 'high' | 'critical';
 export type AlertSeverity = 'critical' | 'warning' | 'advisory' | 'info';
 export type AlertStatus = 'active' | 'investigating' | 'resolved' | 'acknowledged';
 export type SensorQualityStatus = 'optimal' | 'acceptable' | 'warning' | 'critical';
-export type TimeRange = '24H' | '7D' | '30D';
+export type TimeRange = '1H' | '24H' | '7D';
+
+export type DemoScenario = 'NORMAL' | 'HIGH_TURBIDITY' | 'HIGH_TDS' | 'ABNORMAL_PH' | 'RECOVERY';
+
+export interface HardwarePortInfo {
+  path: string;
+  manufacturer: string;
+  serialNumber: string;
+  pnpId: string;
+  friendlyName: string;
+}
+
+export interface CalibrationConfig {
+  rawZeroNtu: number;
+  rawHighNtu: number;
+  calibratedHighNtu: number;
+  coeffA: number;
+  coeffB: number;
+  coeffC: number;
+}
+
+export interface HardwareStatus {
+  connected: boolean;
+  port: string | null;
+  baudRate: number;
+  lastReading: any;
+  calibration: CalibrationConfig;
+}
+
+export interface AnomalyRecord {
+  id: string;
+  timestamp: string;
+  deviceId: string;
+  parameter: 'ph' | 'tds' | 'turbidity' | 'temperature';
+  previousValue: number;
+  currentValue: number;
+  severity: 'warning' | 'critical';
+  probableCause: string;
+  recommendation: string;
+}
+
+export interface WaterDecisionOutput {
+  id: string;
+  deviceId: string;
+  timestamp: string;
+  ph: number;
+  tds: number;
+  temperature: number;
+  turbidity: number;
+  turbidityRaw: number;
+  turbidityVoltage: number;
+  overallStatus: 'SAFE' | 'WARNING' | 'UNSAFE';
+  riskScore: number;
+  parameters: {
+    ph: 'NORMAL' | 'WARNING' | 'CRITICAL';
+    tds: 'NORMAL' | 'WARNING' | 'CRITICAL';
+    temperature: 'NORMAL' | 'WARNING' | 'CRITICAL';
+    turbidity: 'NORMAL' | 'WARNING' | 'CRITICAL';
+  };
+  reasons: string[];
+  anomalies: AnomalyRecord[];
+  probableProblemClass: string;
+  recommendation: string;
+  treatmentSteps: string[];
+}
 
 export interface NodeCoordinates {
   lat: number;

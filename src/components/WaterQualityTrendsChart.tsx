@@ -129,7 +129,7 @@ export const WaterQualityTrendsChart: React.FC<WaterQualityTrendsChartProps> = (
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Time Range Selector */}
           <div className="inline-flex p-1 bg-slate-950/80 border border-slate-800 rounded-lg">
-            {(['24H', '7D', '30D'] as TimeRange[]).map((range) => (
+            {(['1H', '24H', '7D'] as TimeRange[]).map((range) => (
               <button
                 key={range}
                 id={`time-range-btn-${range}`}

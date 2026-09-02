@@ -9,6 +9,7 @@ import {
   RiskAssessment,
   TimeRange,
   TimeSeriesDataPoint,
+  WaterDecisionOutput,
 } from '../types';
 import { KPICardsGrid } from '../components/KPICardsGrid';
 import { WaterQualityTrendsChart } from '../components/WaterQualityTrendsChart';
@@ -16,11 +17,14 @@ import { PipelineNetworkStatusSection } from '../components/PipelineNetworkStatu
 import { NetworkHealthSection } from '../components/NetworkHealthSection';
 import { ActiveAlertsSection } from '../components/ActiveAlertsSection';
 import { RiskOverviewSection } from '../components/RiskOverviewSection';
+import { HardwareControlPanel } from '../components/HardwareControlPanel';
 import {
   Sparkles,
   ShieldCheck,
   Droplets,
   Radio,
+  AlertTriangle,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface DashboardPageProps {
@@ -31,6 +35,7 @@ interface DashboardPageProps {
   trendData: TimeSeriesDataPoint[];
   selectedRange: TimeRange;
   pipelineGraph: PipelineGraph;
+  currentDecision?: WaterDecisionOutput | null;
   onUpdatePipelineGraph: (graph: PipelineGraph, testResult?: NodeTestResult) => void;
   onRangeChange: (range: TimeRange) => void;
   onRefreshTelemetry: () => void;
@@ -47,6 +52,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   trendData,
   selectedRange,
   pipelineGraph,
+  currentDecision = null,
   onUpdatePipelineGraph,
   onRangeChange,
   onRefreshTelemetry,
@@ -56,6 +62,42 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
 }) => {
   return (
     <div id="dashboard-main-view" className="space-y-6 max-w-7xl mx-auto pb-8">
+      {/* Hardware Connection & Controller Panel */}
+      <section aria-label="ESP32 Hardware Control & Simulation">
+        <HardwareControlPanel currentDecision={currentDecision} />
+      </section>
+
+      {/* Decision Engine Treatment Recommendation Banner (if active anomaly or recommendation) */}
+      {currentDecision && currentDecision.overallStatus !== 'SAFE' && (
+        <div
+          id="water-decision-recommendation-card"
+          className="p-5 rounded-2xl bg-gradient-to-r from-amber-950/90 via-slate-900 to-slate-950 border border-amber-500/50 shadow-xl space-y-3"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                <AlertTriangle className="w-5 h-5 animate-pulse" />
+              </div>
+              <div>
+                <span className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">
+                  Decision Engine Alert: {currentDecision.overallStatus} QUALITY DETECTED
+                </span>
+                <h3 className="text-base font-bold text-white">
+                  {currentDecision.probableProblemClass}
+                </h3>
+              </div>
+            </div>
+            <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+              Risk Score: {currentDecision.riskScore}/100
+            </span>
+          </div>
+
+          <p className="text-xs text-slate-300 font-mono leading-relaxed">
+            {currentDecision.recommendation}
+          </p>
+        </div>
+      )}
+
       {/* 1. Dashboard Sub-Banner / Live Telemetry Ingest Info */}
       <div
         id="dashboard-telemetry-banner"

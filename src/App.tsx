@@ -9,6 +9,7 @@ import {
   TimeSeriesDataPoint,
 } from './types';
 import { WaterMonitoringService } from './services/mockData';
+import { hardwareService } from './services/hardwareService';
 import { INITIAL_PIPELINE_GRAPH } from './services/topologyService';
 import { PipelineGraph, NodeTestResult } from './types';
 import { AppSidebar } from './components/AppSidebar';
@@ -60,6 +61,111 @@ export default function App() {
   const [trendData, setTrendData] = useState<TimeSeriesDataPoint[]>(
     WaterMonitoringService.getTimeSeriesData('24H')
   );
+  const [currentDecision, setCurrentDecision] = useState<any>(null);
+
+  // Connect Hardware Telemetry Service Subscriptions
+  useEffect(() => {
+    const unsub = hardwareService.subscribeTelemetry((decision) => {
+      setCurrentDecision(decision);
+      setLastUpdated(decision.timestamp || 'Just now');
+
+      // Live update KPI summary cards with ESP32 / decision engine values
+      setKpis((prev) => ({
+        ...prev,
+        pH: {
+          ...prev.pH,
+          value: decision.ph,
+          displayValue: decision.ph.toString(),
+          status: decision.parameters.ph === 'NORMAL' ? 'optimal' : decision.parameters.ph === 'WARNING' ? 'warning' : 'critical',
+          historicalSparkline: [...prev.pH.historicalSparkline.slice(1), decision.ph],
+        },
+        tds: {
+          ...prev.tds,
+          value: decision.tds,
+          displayValue: decision.tds.toString(),
+          status: decision.parameters.tds === 'NORMAL' ? 'optimal' : decision.parameters.tds === 'WARNING' ? 'warning' : 'critical',
+          historicalSparkline: [...prev.tds.historicalSparkline.slice(1), decision.tds],
+        },
+        turbidity: {
+          ...prev.turbidity,
+          value: decision.turbidity,
+          displayValue: decision.turbidity.toString(),
+          status: decision.parameters.turbidity === 'NORMAL' ? 'optimal' : decision.parameters.turbidity === 'WARNING' ? 'warning' : 'critical',
+          historicalSparkline: [...prev.turbidity.historicalSparkline.slice(1), decision.turbidity],
+        },
+        temperature: {
+          ...prev.temperature,
+          value: decision.temperature,
+          displayValue: decision.temperature.toString(),
+          status: decision.parameters.temperature === 'NORMAL' ? 'optimal' : 'warning',
+          historicalSparkline: [...prev.temperature.historicalSparkline.slice(1), decision.temperature],
+        },
+        overallWQI: {
+          ...prev.overallWQI,
+          value: decision.riskScore,
+          displayValue: decision.riskScore.toString(),
+          statusLabel: decision.overallStatus,
+          historicalSparkline: [...prev.overallWQI.historicalSparkline.slice(1), decision.riskScore],
+        },
+      }));
+
+      // Live update main Water Quality Trends Multi-Line Chart
+      setTrendData((prevTrend) => {
+        const timeLabel = decision.timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        const newPoint: TimeSeriesDataPoint = {
+          timestamp: new Date().toISOString(),
+          timeLabel,
+          pH: decision.ph,
+          tds: decision.tds,
+          turbidity: decision.turbidity,
+          temperature: decision.temperature,
+          chlorine: 1.2,
+          wqi: decision.riskScore,
+        };
+
+        // Keep rolling buffer of trend points (max 24 points)
+        const updated = [...prevTrend, newPoint];
+        if (updated.length > 24) return updated.slice(updated.length - 24);
+        return updated;
+      });
+
+      // Update Risk Assessment
+      setRiskAssessment((prev) => ({
+        ...prev,
+        score: decision.riskScore,
+        level: decision.overallStatus === 'SAFE' ? 'LOW RISK' : decision.overallStatus === 'WARNING' ? 'MODERATE RISK' : 'CRITICAL RISK',
+        headline: `${decision.overallStatus} — ${decision.probableProblemClass}`,
+        shortExplanation: decision.recommendation,
+        recommendations: decision.treatmentSteps,
+      }));
+
+      // Push real anomaly alert if triggered by decision engine
+      if (decision.anomalies && decision.anomalies.length > 0) {
+        const topAnom = decision.anomalies[0];
+        const newAlert: AlertItem = {
+          id: topAnom.id,
+          severity: topAnom.severity === 'critical' ? 'critical' : 'warning',
+          node: topAnom.deviceId,
+          nodeName: `ESP32 Hardware (${topAnom.deviceId})`,
+          timestamp: topAnom.timestamp,
+          timeAgo: 'Just now',
+          title: `HARDWARE ANOMALY: ${topAnom.parameter.toUpperCase()} Spike (${topAnom.currentValue})`,
+          description: `${topAnom.probableCause}. Recommendation: ${topAnom.recommendation}`,
+          status: 'active',
+          parameterAffected: topAnom.parameter,
+          observedValue: `${topAnom.currentValue}`,
+          thresholdValue: 'BIS IS 10500 Ceiling',
+        };
+
+        setAlerts((prev) => {
+          if (prev.some((a) => a.id === topAnom.id)) return prev;
+          return [newAlert, ...prev];
+        });
+      }
+    });
+
+    return () => unsub();
+  }, []);
 
   // Sync trend data on time range switch
   useEffect(() => {
@@ -164,6 +270,7 @@ export default function App() {
               trendData={trendData}
               selectedRange={timeRange}
               pipelineGraph={pipelineGraph}
+              currentDecision={currentDecision}
               onUpdatePipelineGraph={handleUpdatePipelineGraph}
               onRangeChange={setTimeRange}
               onRefreshTelemetry={handleRefresh}

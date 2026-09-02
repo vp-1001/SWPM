@@ -302,7 +302,7 @@ export const INITIAL_RISK_ASSESSMENT: RiskAssessment = {
 // ==========================================
 
 export function generateTimeSeriesData(range: TimeRange): TimeSeriesDataPoint[] {
-  const pointsCount = range === '24H' ? 24 : range === '7D' ? 28 : 30;
+  const pointsCount = range === '1H' ? 12 : range === '24H' ? 24 : 28;
   const result: TimeSeriesDataPoint[] = [];
 
   const now = new Date();
@@ -311,15 +311,15 @@ export function generateTimeSeriesData(range: TimeRange): TimeSeriesDataPoint[] 
     let dateObj: Date;
     let label = '';
 
-    if (range === '24H') {
+    if (range === '1H') {
+      dateObj = new Date(now.getTime() - i * 5 * 60 * 1000);
+      label = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    } else if (range === '24H') {
       dateObj = new Date(now.getTime() - i * 60 * 60 * 1000);
       label = dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-    } else if (range === '7D') {
+    } else {
       dateObj = new Date(now.getTime() - i * 6 * 60 * 60 * 1000);
       label = `${dateObj.toLocaleDateString([], { weekday: 'short' })} ${dateObj.getHours()}:00`;
-    } else {
-      dateObj = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-      label = `${dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' })}`;
     }
 
     // Realistic fluctuating curves with slight sinusoidal patterns & realistic noise
@@ -327,7 +327,7 @@ export function generateTimeSeriesData(range: TimeRange): TimeSeriesDataPoint[] 
     const basePh = 7.32 + Math.sin(t) * 0.18 + (Math.random() - 0.5) * 0.08;
     const baseTds = 195 + Math.cos(t * 0.8) * 16 + (Math.random() - 0.5) * 8;
     
-    // Simulate a mild bump in turbidity towards recent points (simulating TALA-02 transient)
+    // Simulate a mild bump in turbidity towards recent points
     const turbidityBump = i < 5 ? 1.4 * Math.exp(-(5 - i) * 0.2) : 0;
     const baseTurbidity = 1.45 + Math.sin(t * 1.2) * 0.4 + turbidityBump + (Math.random() - 0.5) * 0.15;
     

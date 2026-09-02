@@ -98,6 +98,15 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           <span className="text-[11px] tracking-wide">ONLINE</span>
         </div>
 
+        {/* Live ESP32 Hardware Status Indicator */}
+        <div
+          id="hardware-status-badge"
+          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-[11px] font-mono text-cyan-300"
+        >
+          <Radio className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+          <span>ESP32 Hardware Ingest</span>
+        </div>
+
         {/* Theme Toggle Button (Transition from Dark Mode to Light Mode) */}
         <button
           id="theme-toggle-btn"
