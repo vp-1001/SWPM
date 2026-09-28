@@ -25,7 +25,7 @@
     --bg-page: #FAF7EE;
     --bg-surface: #FDFCF8;
     --bg-sunken: #F6F1E3;
-    --line-border: #E4DCBE;
+    --line-border: rgba(148, 163, 184, 0.35);
     --ink-primary: #2B2620;
     --ink-soft: #5C5445;
     --ink-faint: #948A73;
@@ -36,9 +36,9 @@
     --font-heading: 'Source Serif 4', Georgia, serif;
     --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
     --font-data: 'IBM Plex Mono', monospace;
-    --radius-card: 3px;
-    --radius-btn: 3px;
-    --radius-badge: 3px;
+    --radius-card: 0.75rem;
+    --radius-btn: 0.5rem;
+    --radius-badge: 0.25rem;
   }
 
   body {
@@ -67,29 +67,29 @@
 /* Light Theme Paper & Ledger Aesthetics */
 .light #app-header {
   background-color: #FDFCF8 !important;
-  border-bottom-color: #E4DCBE !important;
+  border-bottom-color: rgba(148, 163, 184, 0.35) !important;
   box-shadow: 0 1px 2px rgba(43, 38, 32, 0.04);
 }
 
 .light #app-sidebar {
   background-color: #FDFCF8 !important;
-  border-right-color: #E4DCBE !important;
+  border-right-color: rgba(148, 163, 184, 0.35) !important;
   border-radius: 0 !important;
 }
 
 .light #app-sidebar .border-b,
 .light #app-sidebar .border-t {
-  border-color: #E4DCBE !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
 }
 
 .light #app-sidebar aside,
 .light aside {
   background-color: #FDFCF8 !important;
-  border-color: #E4DCBE !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
 }
 
 /* Headings in Light Mode: Source Serif 4 */
-.light h1,
+.light h1:not(.font-brand-script),
 .light h2,
 .light h3,
 .light .font-display,
@@ -108,7 +108,7 @@
 .light .bg-gradient-to-t {
   background-image: none !important;
   background-color: #FDFCF8 !important;
-  border-color: #E4DCBE !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
 }
 
 /* Telemetry Dashboard Banner & Header Overviews in Lighter Beige */
@@ -116,7 +116,7 @@
 .light .telemetry-banner {
   background-image: none !important;
   background-color: #FDFCF8 !important;
-  border-color: #E4DCBE !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
   box-shadow: 0 1px 3px rgba(43, 38, 32, 0.05) !important;
 }
 
@@ -129,8 +129,7 @@
 .light [id$="-section"],
 .light .modal-surface {
   background-color: #FDFCF8 !important;
-  border-color: #E4DCBE !important;
-  border-radius: 3px !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
   box-shadow: 0 1px 3px rgba(43, 38, 32, 0.05) !important;
 }
 
@@ -155,8 +154,7 @@
 .light .bg-slate-700\/80,
 .light .bg-slate-700\/50 {
   background-color: #F6F1E3 !important;
-  border-color: #E4DCBE !important;
-  border-radius: 3px !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
 }
 
 /* Button & Interactive Hover States in Light Mode */
@@ -217,7 +215,7 @@
   background-color: #F6F1E3 !important;
 }
 
-/* Border Overrides in Light Mode */
+/* Border Overrides in Light Mode - Aligned with dark mode definition */
 .light .border-slate-800,
 .light .border-slate-800\/80,
 .light .border-slate-800\/60,
@@ -225,7 +223,7 @@
 .light .border-slate-700,
 .light .border-slate-700\/80,
 .light .border-slate-700\/60 {
-  border-color: #E4DCBE !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
 }
 
 /* Text Colors in Light Mode */
@@ -245,21 +243,11 @@
   color: #948A73 !important;
 }
 
-/* Shape Override in Light Mode: 3px Radius everywhere */
-.light .rounded-xl,
-.light .rounded-2xl,
-.light .rounded-lg,
-.light .rounded-md,
-.light .rounded {
-  border-radius: 3px !important;
-}
-
 /* Button & Nav Overrides in Light Mode */
 .light .bg-cyan-500:not(.return-dashboard-btn):not(#return-to-dashboard-btn),
 .light button.bg-cyan-500:not(.return-dashboard-btn):not(#return-to-dashboard-btn) {
   background-color: #2F4C69 !important;
   color: #FFFFFF !important;
-  border-radius: 3px !important;
 }
 
 .light .bg-cyan-500\/10,
@@ -441,3 +429,40 @@
     linear-gradient(to right, rgba(92, 84, 69, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(92, 84, 69, 0.04) 1px, transparent 1px);
 }
+
+/* Brand Font: Luxurious Script */
+.font-brand-script,
+.light .font-brand-script,
+.light h1.font-brand-script,
+header#app-header h1 {
+  font-family: 'Luxurious Script', cursive, sans-serif !important;
+}
+
+/* App Logo Styling:
+   - Dark Mode: Original dark gradient with slate-950 icon
+   - Light Mode: Adjusted vibrant gradient with crisp luminous icon, clean shadow, and subtle rim
+*/
+.brand-logo-gradient {
+  background: linear-gradient(135deg, #06b6d4, #2563eb) !important;
+  color: #020617 !important;
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.25) !important;
+}
+
+.brand-logo-gradient svg {
+  color: #020617 !important;
+  stroke: #020617 !important;
+}
+
+.light .brand-logo-gradient {
+  background: linear-gradient(135deg, #0284c7, #2563eb) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+}
+
+.light .brand-logo-gradient svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+}
+

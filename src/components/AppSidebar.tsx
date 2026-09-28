@@ -209,21 +209,21 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       >
         {/* Brand Header */}
         <div className="p-4 border-b border-slate-800/80 flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-slate-950 shadow-md">
+          <div className="p-2 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-slate-950 shadow-md flex items-center justify-center brand-logo-gradient flex-shrink-0">
             <Droplets className="w-5 h-5 font-bold" />
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="flex items-center gap-1.5">
-              <span className="font-mono font-black text-base tracking-wider text-white">
-                SWPM
+              <span
+                className="font-brand-script text-2xl sm:text-3xl font-normal tracking-wide text-white leading-tight"
+                style={{ fontFamily: "'Luxurious Script', cursive, sans-serif" }}
+              >
+                Jal Aahar
               </span>
-              <span className="px-1 py-0.2 text-[9px] font-mono font-bold bg-cyan-500/20 text-cyan-300 rounded border border-cyan-500/30">
+              <span className="px-1 py-0.2 text-[9px] font-mono font-bold bg-blue-500/20 text-blue-300 rounded border border-blue-500/30 shrink-0">
                 SCADA
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 font-medium">
-              Smart Water Pipeline Monitoring
-            </p>
           </div>
         </div>
 

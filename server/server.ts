@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.json({
     success: true,
-    name: 'SWPM Backend',
+    name: 'Jal Aahar Backend',
     status: 'running',
     mode: isSimulationMode ? 'SIMULATION' : 'HARDWARE',
     endpoints: [
@@ -256,7 +256,7 @@ wss.on('connection', (ws) => {
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`====================================================`);
-  console.log(`  SWPM Backend SCADA Telemetry Server Running`);
+  console.log(`  Jal Aahar Backend SCADA Telemetry Server Running`);
   console.log(`  HTTP REST API: http://localhost:${PORT}`);
   console.log(`  WebSocket URL: ws://localhost:${PORT}`);
   console.log(`  Default Mode: ${isSimulationMode ? 'SIMULATION' : 'HARDWARE'}`);

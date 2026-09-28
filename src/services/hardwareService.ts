@@ -27,7 +27,7 @@ const DEFAULT_PORTS: HardwarePortInfo[] = [
     path: '/dev/ttyUSB0',
     friendlyName: '/dev/ttyUSB0 · SCADA Ingest Transducer (FTDI FT232R)',
     manufacturer: 'FTDI',
-    serialNumber: 'FT232-SWPM-889',
+    serialNumber: 'FT232-JAL-AAHAR-889',
     pnpId: 'USB\\VID_0403&PID_6001\\FT232',
   },
   {

@@ -1,4 +1,4 @@
-# SWPM - Smart Water Pipeline Monitoring System
+# Jal Aahar - Water Pipeline Monitoring System
 
 ## Live Deployment
 

@@ -11,6 +11,7 @@ import {
   ChevronDown,
   Sun,
   Moon,
+  Droplets,
 } from 'lucide-react';
 import { AlertItem } from '../types';
 
@@ -68,19 +69,23 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
           <Menu className="w-5 h-5" />
         </button>
 
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="font-mono font-black text-sm sm:text-base tracking-wider text-white">
-              SWPM
-            </h1>
-            <span className="hidden sm:inline-block text-slate-400 text-xs font-mono">/</span>
-            <span className="hidden sm:inline-block text-xs font-medium text-slate-300">
-              Smart Water Pipeline Monitoring
-            </span>
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 text-slate-950 shadow-md flex items-center justify-center brand-logo-gradient flex-shrink-0">
+            <Droplets className="w-5 h-5 font-bold" />
           </div>
-          <p className="text-[10px] text-slate-400 hidden md:block">
-            Municipal SCADA & Hydrodynamic Water Quality Telemetry
-          </p>
+          <div>
+            <div className="flex items-center gap-2">
+              <h1
+                className="font-brand-script text-2xl sm:text-3xl font-normal text-white leading-none tracking-wide"
+                style={{ fontFamily: "'Luxurious Script', cursive, sans-serif" }}
+              >
+                Jal Aahar
+              </h1>
+              <span className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] font-mono font-bold bg-blue-500/20 text-blue-300 rounded border border-blue-500/30">
+                SCADA
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -341,7 +341,7 @@ export default function App() {
         {/* Footer */}
         <footer className="px-6 py-3 border-t border-slate-800/80 bg-slate-950/80 text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className="font-mono font-semibold text-slate-300">SWPM SCADA</span>
+            <span className="font-mono font-semibold text-slate-300">Jal Aahar SCADA</span>
             <span>·</span>
             <span>Kolkata Municipal Water Supply Network</span>
           </div>
